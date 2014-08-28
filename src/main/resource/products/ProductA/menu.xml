@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- menuKey should be the product name -->
+<无线流量系统 dataSchemaFile="aStructure.xml">
+	<import>dimensionChannel.xml</import>
+	<import>dimensionBrowser.xml</import>
+	<import>dimensionProvince.xml</import>
+	<import>dimensionABtest.xml</import>
+</无线流量系统>

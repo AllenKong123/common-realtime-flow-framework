@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- datasource -->
+<!-- name can be the DB name or the Big Table name like Hbase -->
+<!-- the address,username,password can be set to 'default', then the datasource will 
+	 used configured configuration according to the environment of the computer like hadoop
+	 bigtable or relationship tables.
+-->
+
+<!-- json -->
+<!-- key: dynamic dimensions , the split will decide how many objects in array-->
+<!-- type:any type just the same with java, the name should in lowercase and it will be checked in backends-->
+<!-- value:
+			$ means variables from the request or the value we wants in the json object, this property will 
+			  be loaded from the args map in DataParser.java.
+			* means the constants value, in the json object it will directly loaded to the key(name).
+			@ means the results from the table we query.
+			
+-->
+
+<schema>
+	<datasource name="wap.demo.tmp" bigtable="true" 
+				address="default" username="default" password="default"/>
+				
+<!-- 	<datasource name="dbname" bigtable="false" 
+				address="localhost:3306" username="root" password="root"/> -->
+
+	<json>
+		<list>
+			<struct key="$dimensions">
+				<item type="string" name="range" value="$time"/>
+				<item type="integer" name="count" value="$count"/>
+				<columns type="string[]" name="columns" value="*timestamp,pv,uv,cl"/>
+				<points type="list" name="points" value="@TABLE"/>
+			</struct>
+		</list>
+	</json>
+</schema>

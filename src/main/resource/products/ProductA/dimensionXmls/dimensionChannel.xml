@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<渠道 dimension="channel">
+
+	<全部 id="all"></全部>
+	
+	<Sogou域名流量汇总>
+		<手机QQ浏览器 id="a"/>
+		<手机腾讯网 id="b"/>
+		<手机搜狗浏览器 id="c"/>
+		<手机输入法APP id="d"/>
+	</Sogou域名流量汇总>
+	
+	<SOSO域名流量汇总>
+		<SOSO-手机QQ浏览器/>
+		<SOSO-手机腾讯网/>
+		<SOSO-手机搜狗浏览器/>
+		<SOSO-手机输入法APP/>
+	</SOSO域名流量汇总>
+</渠道>

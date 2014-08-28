@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<浏览器 dimension="browser">
+	<全部 id="all"></全部>
+	<qq id="qq"/>
+	<uc id="uc"/>
+	<obigo id="obigo"/>
+	<chrome id="chrome"/>
+	<ie id="ie"/>
+	<sogou id="sogou"/>
+</浏览器>
