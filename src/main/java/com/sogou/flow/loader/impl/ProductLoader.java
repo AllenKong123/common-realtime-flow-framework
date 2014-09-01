@@ -36,11 +36,11 @@ public class ProductLoader implements Loader
 					String folderName = file.getName();
 					MenuItemWrapper menuWrapper = new MenuItemWrapper();
 					File tmp = FileLoaderTools.getXmlByName(menuXml, path+folderName+SystemConstants.SPLITTER);
-					Document document = Dom4jTools.getDocByPathAndName(tmp);
+					Document document = Dom4jTools.getDocByFile(tmp);
 					
-					MenusParserTools.processMenuCompleter(menuWrapper, document, path+folderName);
-					
+					MenusParserTools.processMenuCompleter(menuWrapper, document, folderName);
 					menuWrapper.setProductName(folderName);
+					
 					CacheHandler.menuMapper.put(folderName, menuWrapper);
 				}
 			}
@@ -57,6 +57,7 @@ public class ProductLoader implements Loader
 		try {
 			CacheHandler.dataSchemaMapper.remove(key);
 			CacheHandler.menuMapper.remove(key);
+			CacheHandler.dimensionsMapper.remove(key);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = false;
@@ -76,9 +77,9 @@ public class ProductLoader implements Loader
 					String folderName = file.getName();
 					MenuItemWrapper menuWrapper = new MenuItemWrapper();
 					File tmp = FileLoaderTools.getXmlByName(menuXml, path+folderName+SystemConstants.SPLITTER);
-					Document document = Dom4jTools.getDocByPathAndName(tmp);
+					Document document = Dom4jTools.getDocByFile(tmp);
 					
-					MenusParserTools.processMenuCompleter(menuWrapper, document, path+folderName);
+					MenusParserTools.processMenuCompleter(menuWrapper, document, folderName);
 					
 					menuWrapper.setProductName(folderName);
 					CacheHandler.menuMapper.put(folderName, menuWrapper);
@@ -90,5 +91,11 @@ public class ProductLoader implements Loader
 			result = false;
 		}
     	return result;
+	}
+	
+	public static void main(String[] args){
+		ProductLoader loader = new ProductLoader();
+		loader.load();
+		System.out.println("d");
 	}
 }

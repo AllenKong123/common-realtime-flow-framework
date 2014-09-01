@@ -25,7 +25,7 @@ public class Dom4jTools {
 	 * @param file the xml file to be loaded
 	 * @return the dom4j document
 	 */
-	public static Document getDocByPathAndName(File file){
+	public static Document getDocByFile(File file){
 		SAXReader reader = new SAXReader();
 		try {
 			Document document = reader.read(file);

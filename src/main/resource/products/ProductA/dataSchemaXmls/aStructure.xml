@@ -14,6 +14,7 @@
 			  be loaded from the args map in DataParser.java.
 			* means the constants value, in the json object it will directly loaded to the key(name).
 			@ means the results from the table we query.
+			# means inherit result, recursive loading (sons).
 			
 -->
 
@@ -26,11 +27,12 @@
 
 	<json>
 		<list>
-			<struct key="$dimensions">
+			<struct key="$currentDimension">
 				<item type="string" name="range" value="$time"/>
 				<item type="integer" name="count" value="$count"/>
 				<columns type="string[]" name="columns" value="*timestamp,pv,uv,cl"/>
 				<points type="list" name="points" value="@TABLE"/>
+				<sons type="list" name="sons" value="#INHERIT"/>
 			</struct>
 		</list>
 	</json>

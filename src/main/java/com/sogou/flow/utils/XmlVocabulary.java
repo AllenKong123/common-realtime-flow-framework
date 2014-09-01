@@ -24,8 +24,10 @@ public class XmlVocabulary {
 	
 	public static final String PARAM_RESULT = "$";
 	public static final String TABLE_RESULT = "@";
+	public static final String INHERIT_RESULT = "#";
 	public static final String CONSTANT_RESULT = "*";
 	public static final String TABLE = "TABLE";
+	public static final String INHERIT = "INHERIT";
 	public static final String JSON = "json";
 	public static final String COLUMNS = "columns";
 }

@@ -11,9 +11,15 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 /**
- * The data parser is used to parse json by dom4j document and the queried table data.
- * @author hequn
- *
+ * 
+ *  Copyright 2014 SOGOU
+ *  All right reserved.
+ *	<p>
+ *	The data parser is used to parse json by dom4j document and the queried table data.
+ *	</p>
+ * @author Qun He
+ * @Creat Time : 2014-8-29 下午2:56:25
+ * @DataParserTools
  */
 public class DataParserTools {
 	
@@ -22,18 +28,23 @@ public class DataParserTools {
 	/**
 	 * The method will get useful params from args to json objects , so the map can be request mapping
 	 * and then the results should be the data queried from the DB.
+	 * @param productName the current product
+	 * @param dimension the specified dimension of the current object
 	 * @param document dom4j document, from the dataSchemaFile
+	 * @param jsonObject the object to be add datas eg:jsonObject from the results map
 	 * @param args the variables container
 	 * @param results the result returned from the DB, key is the dimension and value is the queried results
+	 * @param depth the depth of the offsprings using by dimension further searching
 	 * @return json string (final result)
 	 */
 	@SuppressWarnings("unchecked")
-	public static String parseByDocument(Document document , Map<String,?> args , Map<String,?> results){
-		
+	public static JSONObject parseByDocument(String productName, String dimension, Document document , 
+							JSONObject jsonObject, Map<String,?> args, Map<String,?> results, int depth){
+		if(depth == 0) return jsonObject;
 		//load exact element, make sure the file is in right formation
-		Element element = null;
+		Element root = null;
 		try {
-			element = document.getRootElement()
+			root = document.getRootElement()
 								.element(XmlVocabulary.JSON)
 									.element(XmlVocabulary.LIST);
 		} catch (Exception e) {
@@ -41,40 +52,15 @@ public class DataParserTools {
 			logger.error("The xml configuration get root element failed"+e.getMessage());
 			return null;
 		}
-		String eleName = element.getName();
+		String eleName = root.getName();
 		if(!eleName.equals(XmlVocabulary.LIST)) return null;
 		
-		//build the jsonArray
-		JSONArray jsonArray = new JSONArray();
-		Element struct = element.element(XmlVocabulary.STRUCT);
-
-		//the key which represents the current dimension(the number of the json objects depends on it)
-		String keyName = trimFirstLetter(struct.attribute(XmlVocabulary.KEY).getValue());
-		String[] dimensions = ((String)args.get(keyName)).split(XmlVocabulary.COMMA);
+		Element struct = root.element(XmlVocabulary.STRUCT);
 		
-		//create the objects 
-		for (int i = 0; i < dimensions.length; i++) {
-			String dimension = dimensions[i];
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put(XmlVocabulary.KEY, dimension);
-			fillValues(jsonObject,struct.elements(),args,results.get(dimension));
-			jsonArray.add(jsonObject);
-		}
-		
-		return jsonArray.toString();
-	}
+		jsonObject.put(XmlVocabulary.KEY, dimension);
 
-	/**
-	 * Fill the objects to jsonArray, three kinds of variables.
-	 * <p>PARAM_RESULT : the values from the args map</p>
-	 * <p>CONSTANT_RESULT : the values from the xml dataSchema file</p>
-	 * <p>TABLE_RESULT : the values from the DB</p>
-	 * @param jsonObject
-	 * @param elements
-	 * @param args
-	 * @param results
-	 */
-	private static void fillValues(JSONObject jsonObject, List<Element> elements, Map<String, ?> args, Object results) {
+		List<Element> elements = struct.elements();
+		//get all the data description
 		for (Element element : elements) {
 			
 			String type = element.attributeValue(XmlVocabulary.TYPE);
@@ -90,10 +76,34 @@ public class DataParserTools {
 				if(checkAvailableValue(type, trimFirstLetter(value).split(XmlVocabulary.COMMA)))
 					jsonObject.put(name, trimFirstLetter(value).split(XmlVocabulary.COMMA));
 			}else if(sign.equals(XmlVocabulary.TABLE_RESULT)){
-				if(checkAvailableValue(type, results)&&trimFirstLetter(value).equals(XmlVocabulary.TABLE))
-					jsonObject.put(name, results);
+				if(checkAvailableValue(type, results.get(dimension))
+											&&trimFirstLetter(value).equals(XmlVocabulary.TABLE))
+					jsonObject.put(name, results.get(dimension));
+			}else if(sign.equals(XmlVocabulary.INHERIT_RESULT)){
+				if(trimFirstLetter(value).equals(XmlVocabulary.INHERIT)){
+					List<String> dimensions = CacheHandler.dimensionsMapper
+														.get(productName).get(dimension);
+					JSONArray jsonArray = new JSONArray();
+					
+					if(dimensions==null || dimension == null) {
+						jsonArray.add(null);
+						logger.error("There must be errors in schema xml,productName is "
+									+productName+" and dimension is "+dimension);
+						continue;
+					}
+					//load the next object
+					--depth;
+					for (String dimTmp : dimensions) {
+						jsonArray.add(parseByDocument(productName, dimTmp, 
+											document,new JSONObject(), args, results,depth));
+					}
+					
+					jsonObject.put(name, jsonArray);
+				}
 			}
 		}
+				
+		return jsonObject;
 	}
 
 	/**
@@ -103,7 +113,7 @@ public class DataParserTools {
 	 * @return true if matches
 	 */
 	private static boolean checkAvailableValue(String type, Object target) {
-		
+		if(target == null) return false;
 		String instanceName = target.getClass().getSimpleName();
 		return instanceName.toLowerCase().endsWith(type);
 	}

@@ -3,6 +3,7 @@ package com.sogou.flow.dao;
 import java.util.List;
 
 import com.sogou.flow.utils.abstracts.DBHolder;
+import com.sogou.flow.utils.dto.Criterion;
 
 /**
  * 
@@ -25,5 +26,5 @@ public interface DBQuerierDao {
 	 * @param timeEnd the end time of the records
 	 * @return the results of the querying <em>eg: Map List<Object[]> sth.</em>
 	 */
-	public <T> T queryByParams(DBHolder dbHolder , List<String> params , long timeBegin , long timeEnd);
+	public <T> T queryByParams(DBHolder dbHolder , List<Criterion> params , long timeBegin , long timeEnd);
 }

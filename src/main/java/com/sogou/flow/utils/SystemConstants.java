@@ -25,9 +25,12 @@ public class SystemConstants {
 	public static final String PRODUCTS_LOCATION = "PRODUCTS_LOCATION";
 	public static final String DATA_STRUCTURE_PATH = "DATA_STRUCTURE_PATH";
 	public static final String DATA_DIMENSION_PATH = "DATA_DIMENSION_PATH";
+	public static final String JSON_DEPTH="JSON_DEPTH";
+	public static final String HBASE_ZOOKEEPER_QUORUM = "HBASE_ZOOKEEPER_QUORUM";
 	
 	//the constants of the system
 	public static final String SPLITTER="/";
+	public static final String ZOOKEEPER="hbase.zookeeper.quorum";
 	
 	//load the key value into properties
 	static {

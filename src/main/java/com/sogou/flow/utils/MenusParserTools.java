@@ -1,7 +1,10 @@
 package com.sogou.flow.utils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
@@ -25,8 +28,11 @@ public class MenusParserTools {
 	 * @param document the dom4j document, in order to get the element
 	 * @param productName the product name specially for this product
 	 */
-	public static void processMenuCompleter(MenuItemWrapper menuItemWrapper , Document document , String productName){
+	public static void processMenuCompleter(MenuItemWrapper menuItemWrapper , Document document , 
+														String productName){
 		
+		String path = SystemConstants.properties.getProperty(SystemConstants.PRODUCTS_LOCATION);
+
 		//Fill the first menu.xml to menuItemWrapper, reflection attribute to instance
 		Dom4jTools.setValueToInstanceByMethod(menuItemWrapper, document.getRootElement());
 		
@@ -37,8 +43,11 @@ public class MenusParserTools {
 		menuItemWrapper.setMenuName(document.getRootElement().getName());
 		//Load the product dataSchema
 		CacheHandler.dataSchemaMapper.put(productName,
-						createDataSchemaByFile(menuItemWrapper,productName+SystemConstants.SPLITTER));
+						createDataSchemaByFile(menuItemWrapper,path+productName+SystemConstants.SPLITTER));
 		
+		Map<String, List<String>> currProductDimensions=new HashMap<String, List<String>>();
+		//Load the dimensionsMapper
+		CacheHandler.dimensionsMapper.put(productName,currProductDimensions);
 		//Each element -> one import sentence -> one dimension
 		for (Element element : importElements) {
 			//Just load the import element and get the content, head menu
@@ -48,12 +57,12 @@ public class MenusParserTools {
 				//Get the xml first and parse to Document
 				File file = FileLoaderTools.getXmlByName(
 						element.getText(), 
-						productName
+						path+productName
 						+SystemConstants.SPLITTER
 						+SystemConstants.properties.getProperty(SystemConstants.DATA_DIMENSION_PATH));
-				Document doc = Dom4jTools.getDocByPathAndName(file);
+				Document doc = Dom4jTools.getDocByFile(file);
 				//The method to load MenuItem in the specified dimension xml configuration 
-				processMenuItems(menuItemWrapper.getMenuItems(),doc.getRootElement(),0);
+				processMenuItems(menuItemWrapper.getMenuItems(),doc.getRootElement(),currProductDimensions,0);
 				menuItemWrapper.getDimensions().add(doc.getRootElement().attributeValue(XmlVocabulary.DIMENSION));
 			}
 		}
@@ -63,10 +72,12 @@ public class MenusParserTools {
 	 * Load the menu one by one , then map the related dataSchema
 	 * @param menuItems
 	 * @param element
+	 * @param currProductDimensions 
 	 * @param order
 	 * @param map 
 	 */
-	private static void processMenuItems(List<MenuItem> menuItems, Element element , int order) {
+	private static void processMenuItems(List<MenuItem> menuItems, Element element , 
+											Map<String, List<String>> currProductDimensions, int order) {
 		
 		//Create the menuItem and set it to parent's children list
 		MenuItem menuItem = new MenuItem();
@@ -83,19 +94,29 @@ public class MenusParserTools {
 			menuItem.setDimension(element.getParent().attributeValue(XmlVocabulary.DIMENSION));
 			element.addAttribute(XmlVocabulary.DIMENSION, menuItem.getDimension());
 		}
-				
+		
+		List<String> sons = new ArrayList<String>();
+		//For each dimension, it's doc will be loaded in
+		currProductDimensions.put(itemName, sons);
+		
 		@SuppressWarnings("unchecked")
 		List<Element> elements = element.elements();
 		for (Element elementTmp : elements) {
-			processMenuItems(menuItem.getChildrenItems(), elementTmp , order++);
+			processMenuItems(menuItem.getChildrenItems(), elementTmp , currProductDimensions , order++);
+			sons.add(elementTmp.getName());
 		}
 	}
 
+	/**
+	 * Load the dataSchema file of the current product.
+	 * @param menuItemWrapper the menuItemWrapper to get the schema file name
+	 * @param currentProduct the name of the product
+	 * @return the schema document
+	 */
 	private static Document createDataSchemaByFile(MenuItemWrapper menuItemWrapper , String currentProduct) {
-		String realFilePath = 
+		String realFilePath =
 				currentProduct+SystemConstants.properties.getProperty(SystemConstants.DATA_STRUCTURE_PATH);
 		File tmp = FileLoaderTools.getXmlByName(menuItemWrapper.getDataSchemaFile(), realFilePath);
-		Document document = Dom4jTools.getDocByPathAndName(tmp);
-		return document;
+		return Dom4jTools.getDocByFile(tmp);
 	}
 }

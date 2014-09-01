@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <渠道 dimension="channel">
-
-	<全部 id="all"></全部>
 	
 	<Sogou域名流量汇总>
 		<手机QQ浏览器 id="a"/>

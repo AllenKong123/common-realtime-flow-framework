@@ -1,8 +1,14 @@
 package com.sogou.flow.model;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HTable;
 
 import com.sogou.flow.dao.impl.DBHBaseQuerierImpl;
+import com.sogou.flow.utils.SystemConstants;
 import com.sogou.flow.utils.abstracts.DBHolder;
 
 /**
@@ -20,17 +26,37 @@ import com.sogou.flow.utils.abstracts.DBHolder;
  */
 public class HBaseHolder extends DBHolder{
 	
+	private String dbName;
+	private HTable hTable;
+
 	public HBaseHolder(String dbName, String address, boolean bigTable,
-			String username, String password) {
-		super(dbName, address, bigTable, username, password);
-		// TODO Auto-generated constructor stub
+			String username, String password ,List<String> targets) {
+		super(dbName, address, bigTable, username, password, targets);
+		this.dbName = dbName;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public HTable getConnectedAgent() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.hTable == null){
+			Configuration conf = HBaseConfiguration.create();
+			conf.set(SystemConstants.ZOOKEEPER, 
+					SystemConstants.properties.getProperty(SystemConstants.HBASE_ZOOKEEPER_QUORUM));
+			try {
+				this.hTable = new HTable(conf, dbName);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		}
+		return this.hTable;
+	}
+	
+	public HTable gethTable() {
+		return hTable;
+	}
+	
+	public void sethTable(HTable hTable) {
+		this.hTable = hTable;
 	}
 
 }
