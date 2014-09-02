@@ -6,9 +6,14 @@ import java.util.Map;
 
 import org.dom4j.Document;
 
+import com.sogou.flow.loader.impl.ProductLoader;
+import com.sogou.flow.utils.dto.FileStatus;
 import com.sogou.flow.utils.model.MenuItemWrapper;
 
 public class CacheHandler {
+	//The product holder(loader)
+	public static final ProductLoader productLoader = new ProductLoader();
+	
 	//each product will have it's own menuItemWrapper, the menuKey will be the
 	//product name
 	public static final Map<String,MenuItemWrapper> menuMapper 
@@ -28,5 +33,8 @@ public class CacheHandler {
 	public static final Map<String,Object> cachedData
 								= new HashMap<String, Object>();
 	
-	
+	//file status tracker (just track the menu file)
+	public static final Map<String,FileStatus> fileTracker
+								= new HashMap<String, FileStatus>();
+
 }

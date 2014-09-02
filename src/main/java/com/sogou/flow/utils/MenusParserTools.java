@@ -10,6 +10,10 @@ import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
+import com.sogou.common.utils.Dom4jTools;
+import com.sogou.common.utils.FileLoadTools;
+import com.sogou.flow.constants.SystemConstants;
+import com.sogou.flow.constants.XmlVocabulary;
 import com.sogou.flow.utils.model.MenuItem;
 import com.sogou.flow.utils.model.MenuItemWrapper;
 
@@ -55,7 +59,7 @@ public class MenusParserTools {
 				continue;
 			else {
 				//Get the xml first and parse to Document
-				File file = FileLoaderTools.getXmlByName(
+				File file = FileLoadTools.getXmlByName(
 						element.getText(), 
 						path+productName
 						+SystemConstants.SPLITTER
@@ -116,7 +120,7 @@ public class MenusParserTools {
 	private static Document createDataSchemaByFile(MenuItemWrapper menuItemWrapper , String currentProduct) {
 		String realFilePath =
 				currentProduct+SystemConstants.properties.getProperty(SystemConstants.DATA_STRUCTURE_PATH);
-		File tmp = FileLoaderTools.getXmlByName(menuItemWrapper.getDataSchemaFile(), realFilePath);
+		File tmp = FileLoadTools.getXmlByName(menuItemWrapper.getDataSchemaFile(), realFilePath);
 		return Dom4jTools.getDocByFile(tmp);
 	}
 }

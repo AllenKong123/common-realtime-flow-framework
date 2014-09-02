@@ -4,12 +4,13 @@ import java.io.File;
 
 import org.dom4j.Document;
 
+import com.sogou.common.utils.Dom4jTools;
+import com.sogou.common.utils.FileLoadTools;
+import com.sogou.flow.constants.SystemConstants;
 import com.sogou.flow.loader.Loader;
 import com.sogou.flow.utils.CacheHandler;
-import com.sogou.flow.utils.Dom4jTools;
-import com.sogou.flow.utils.FileLoaderTools;
 import com.sogou.flow.utils.MenusParserTools;
-import com.sogou.flow.utils.SystemConstants;
+import com.sogou.flow.utils.dto.FileStatus;
 import com.sogou.flow.utils.model.MenuItemWrapper;
 
 /**
@@ -24,25 +25,17 @@ import com.sogou.flow.utils.model.MenuItemWrapper;
 public class ProductLoader implements Loader
 {
 
+	private String path = SystemConstants.properties.getProperty(SystemConstants.PRODUCTS_LOCATION);
+	private String menuXml = SystemConstants.properties.getProperty(SystemConstants.MENU_XML);
+	
 	@Override
 	public boolean load() {
 		boolean result = true;
     	try {
-			String path = SystemConstants.properties.getProperty(SystemConstants.PRODUCTS_LOCATION);
-			String menuXml = SystemConstants.properties.getProperty(SystemConstants.MENU_XML);
-			File[] files = FileLoaderTools.getFoldersByDirectory(path);
+			File[] files = FileLoadTools.getFoldersByDirectory(path);
 			for (File file : files) {
-				if(file.isDirectory()){
-					String folderName = file.getName();
-					MenuItemWrapper menuWrapper = new MenuItemWrapper();
-					File tmp = FileLoaderTools.getXmlByName(menuXml, path+folderName+SystemConstants.SPLITTER);
-					Document document = Dom4jTools.getDocByFile(tmp);
-					
-					MenusParserTools.processMenuCompleter(menuWrapper, document, folderName);
-					menuWrapper.setProductName(folderName);
-					
-					CacheHandler.menuMapper.put(folderName, menuWrapper);
-				}
+				if(file.isDirectory())
+					createOneProduct(file.getName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,6 +51,7 @@ public class ProductLoader implements Loader
 			CacheHandler.dataSchemaMapper.remove(key);
 			CacheHandler.menuMapper.remove(key);
 			CacheHandler.dimensionsMapper.remove(key);
+			CacheHandler.fileTracker.remove(key);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = false;
@@ -69,20 +63,10 @@ public class ProductLoader implements Loader
 	public boolean reload(String key) {
 		boolean result = true;
     	try {
-			String path = SystemConstants.properties.getProperty(SystemConstants.PRODUCTS_LOCATION);
-			String menuXml = SystemConstants.properties.getProperty(SystemConstants.MENU_XML);
-			File[] files = FileLoaderTools.getFoldersByDirectory(path);
+			File[] files = FileLoadTools.getFoldersByDirectory(path);
 			for (File file : files) {
 				if(file.isDirectory()&&file.getName().equals(key)){
-					String folderName = file.getName();
-					MenuItemWrapper menuWrapper = new MenuItemWrapper();
-					File tmp = FileLoaderTools.getXmlByName(menuXml, path+folderName+SystemConstants.SPLITTER);
-					Document document = Dom4jTools.getDocByFile(tmp);
-					
-					MenusParserTools.processMenuCompleter(menuWrapper, document, folderName);
-					
-					menuWrapper.setProductName(folderName);
-					CacheHandler.menuMapper.put(folderName, menuWrapper);
+					createOneProduct(file.getName());
 					break;
 				}
 			}
@@ -93,9 +77,22 @@ public class ProductLoader implements Loader
     	return result;
 	}
 	
-	public static void main(String[] args){
-		ProductLoader loader = new ProductLoader();
-		loader.load();
-		System.out.println("d");
+	/**
+	 * Create the menu and data for this product.
+	 * @param folderName
+	 */
+	private void createOneProduct(String folderName){
+
+		MenuItemWrapper menuWrapper = new MenuItemWrapper();
+		File tmp = FileLoadTools.getXmlByName(menuXml, path+folderName+SystemConstants.SPLITTER);
+		Document document = Dom4jTools.getDocByFile(tmp);
+		//Add the file to tracker if it changed
+		FileStatus fileStatus = new FileStatus(tmp.getName(), tmp.lastModified());
+		CacheHandler.fileTracker.put(folderName, fileStatus);
+		//Parse the menu
+		MenusParserTools.processMenuCompleter(menuWrapper, document, folderName);
+		menuWrapper.setProductName(folderName);
+		//cache it
+		CacheHandler.menuMapper.put(folderName, menuWrapper);
 	}
 }

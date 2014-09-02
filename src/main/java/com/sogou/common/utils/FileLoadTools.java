@@ -1,4 +1,4 @@
-package com.sogou.flow.utils;
+package com.sogou.common.utils;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -12,9 +12,9 @@ import org.apache.log4j.Logger;
  * @author hequn
  *2014-8-20 12:36:34
  */
-public class FileLoaderTools {
+public class FileLoadTools {
 
-	public static Logger logger = Logger.getLogger(FileLoaderTools.class);
+	public static Logger logger = Logger.getLogger(FileLoadTools.class);
 	
 	/**
 	 * Get the xml files in the folder.
@@ -22,7 +22,7 @@ public class FileLoaderTools {
 	 * @return all the files in the folder
 	 */
 	public static File[] getFilesByDirectory(String path){
-		Class<?> clazz = FileLoaderTools.class;
+		Class<?> clazz = FileLoadTools.class;
 		URLClassLoader loader = (URLClassLoader) clazz.getClassLoader();
 		URL url = null;
 		url = loader.getResource(path);
@@ -55,7 +55,7 @@ public class FileLoaderTools {
 	 * @return all the folders in the current folder
 	 */
 	public static File[] getFoldersByDirectory(String path){
-		Class<?> clazz = FileLoaderTools.class;
+		Class<?> clazz = FileLoadTools.class;
 		URLClassLoader loader = (URLClassLoader) clazz.getClassLoader();
 		URL url = null;
 		url = loader.getResource(path);
@@ -82,7 +82,7 @@ public class FileLoaderTools {
 	 */
 	public static File getXmlByName(String fileName,String path) {
 		
-		Class<?> clazz = FileLoaderTools.class;
+		Class<?> clazz = FileLoadTools.class;
 		URLClassLoader loader = (URLClassLoader) clazz.getClassLoader();
 		URL url = null;
 		url = loader.getResource(path+fileName);

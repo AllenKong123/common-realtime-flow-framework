@@ -3,7 +3,8 @@ package com.sogou.flow.listener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import com.sogou.flow.loader.impl.ProductLoader;
+import com.sogou.flow.utils.CacheHandler;
+import com.sogou.flow.utils.MenuFileTracker;
 
 
 /**
@@ -34,8 +35,11 @@ public class ContextListener implements ServletContextListener {
 		
 	}
 	
+	/**
+	 * Load the product.
+	 */
 	public void loadResourceMap(){
-		ProductLoader productLoader = new ProductLoader();
-		productLoader.load();
+		CacheHandler.productLoader.load();
+		MenuFileTracker.startTracker();
 	}
 }

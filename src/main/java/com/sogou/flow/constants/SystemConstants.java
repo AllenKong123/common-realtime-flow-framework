@@ -1,4 +1,4 @@
-package com.sogou.flow.utils;
+package com.sogou.flow.constants;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,12 +25,17 @@ public class SystemConstants {
 	public static final String PRODUCTS_LOCATION = "PRODUCTS_LOCATION";
 	public static final String DATA_STRUCTURE_PATH = "DATA_STRUCTURE_PATH";
 	public static final String DATA_DIMENSION_PATH = "DATA_DIMENSION_PATH";
-	public static final String JSON_DEPTH="JSON_DEPTH";
 	public static final String HBASE_ZOOKEEPER_QUORUM = "HBASE_ZOOKEEPER_QUORUM";
 	
 	//the constants of the system
-	public static final String SPLITTER="/";
-	public static final String ZOOKEEPER="hbase.zookeeper.quorum";
+	public static final String SPLITTER = "/";
+	public static final String ZOOKEEPER = "hbase.zookeeper.quorum";
+	public static final String PRODUCT_NAME = "productName";
+	public static final String CURRENT_DIMENSION = "currentDimension";
+	public static final String CONTENT_TYPE = "text/html; charset=utf-8";
+	public static final String TIME_BEGIN = "timeBegin";
+	public static final String TIME_END = "timeEnd";
+	public static final String DEPTH = "depth";
 	
 	//load the key value into properties
 	static {

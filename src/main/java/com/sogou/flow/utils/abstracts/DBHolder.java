@@ -1,7 +1,5 @@
 package com.sogou.flow.utils.abstracts;
 
-import java.util.List;
-
 /**
  * 
  *  Copyright 2014 SOGOU
@@ -24,10 +22,10 @@ public abstract class DBHolder {
 	protected String username;
 	protected String password;
 
-	protected List<String> targets;
+	protected String[] targets;
 	
 	public DBHolder(String dbName, String address, boolean bigTable,
-			String username, String password , List<String> targets) {
+			String username, String password , String[] targets) {
 		super();
 		this.dbName = dbName;
 		this.address = address;
@@ -73,10 +71,10 @@ public abstract class DBHolder {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public List<String> getTargets() {
+	public String[] getTargets() {
 		return targets;
 	}
-	public void setTargets(List<String> targets) {
+	public void setTargets(String[] targets) {
 		this.targets = targets;
 	}
 }

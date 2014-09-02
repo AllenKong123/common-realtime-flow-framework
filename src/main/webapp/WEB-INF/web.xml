@@ -14,6 +14,14 @@
 		<servlet-name>QueryServlet</servlet-name>
 		<url-pattern>/QueryServlet</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>MenuServlet</servlet-name>
+		<servlet-class>com.sogou.flow.action.MenuServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MenuServlet</servlet-name>
+		<url-pattern>/MenuServlet</url-pattern>
+	</servlet-mapping>
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>com.sogou.flow.filters.SetCharacterEncodingFilter</filter-class>

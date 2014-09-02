@@ -11,6 +11,7 @@ import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 
+import com.sogou.flow.constants.XmlVocabulary;
 import com.sogou.flow.dao.DBQuerierDao;
 import com.sogou.flow.utils.abstracts.DBHolder;
 import com.sogou.flow.utils.dto.Criterion;
@@ -29,17 +30,19 @@ import com.sogou.flow.utils.dto.Criterion;
  */
 public class DBHBaseQuerierImpl implements DBQuerierDao{
 
+	//Define some useful properties here
 	private final String QUALIFIER = "master";
-	private final int COUNT = 1;
 	
 	@SuppressWarnings({ "hiding", "unchecked" })
 	@Override
 	public <Object> Object queryByParams(DBHolder dbHolder, List<Criterion> params 
 																	, long timeBegin , long timeEnd) {
+		//use the List<List<Object>> as the Object to the results
 		List<List<Object>> results = new ArrayList<List<Object>>();
 		try {
 			HTable hTable = (HTable)dbHolder.getConnectedAgent();
 			
+			//combine the key
 			String key = "";
 			for (Criterion criterion : params) {
 				key+=criterion.getVariableValue();
@@ -49,9 +52,9 @@ public class DBHBaseQuerierImpl implements DBQuerierDao{
 			byte[] qualifier = Bytes.toBytes(QUALIFIER);
 			
 			Get get =new Get(rowKey);
-			get.setMaxVersions().setTimeRange(timeBegin, timeEnd).setMaxResultsPerColumnFamily(COUNT);
+			get.setMaxVersions().setTimeRange(timeBegin, timeEnd);
 			for (String target : dbHolder.getTargets()) {
-				get.addFamily(Bytes.toBytes(target));
+				if(!target.equals(XmlVocabulary.TIMESTAMP)) get.addFamily(Bytes.toBytes(target));
 			}
 			
 			Result r = hTable.get(get);
@@ -62,19 +65,21 @@ public class DBHBaseQuerierImpl implements DBQuerierDao{
 				results.add(null);
 			}
 			else {
-				
+				//get the datas and map them to list
 				boolean signal = true;
+				List<Long> times = new ArrayList<Long>();
 				for (String target : dbHolder.getTargets()) {
+					if(target.equals(XmlVocabulary.TIMESTAMP)) continue;
 					NavigableMap<Long, byte[]> contentMap = 
 										resultMap.get(Bytes.toBytes(target)).get(qualifier);
 					int count = 0;
 					for(Map.Entry<Long, byte[]> ent : contentMap.entrySet()){
 						List<Object> objs = new ArrayList<Object>();
-						//long time = ent.getKey();
 						byte[] value = ent.getValue();
 						
 						if(results.size() == count && signal == true) {
 							objs.add((Object)Integer.valueOf(Bytes.toString(value)));
+							times.add(ent.getKey());
 							results.add(objs);
 						}
 						else {
@@ -83,6 +88,10 @@ public class DBHBaseQuerierImpl implements DBQuerierDao{
 						count++;
 					}
 					signal = false;
+				}
+				//the timestamp is a unique property, deal it here
+				for (int i = 0 ; i < times.size() ; i++) {
+					results.get(i).add((Object)times.get(i));
 				}
 			}
 		} catch (IOException e) {

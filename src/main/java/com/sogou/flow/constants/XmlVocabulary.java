@@ -1,4 +1,4 @@
-package com.sogou.flow.utils;
+package com.sogou.flow.constants;
 
 public class XmlVocabulary {
 
@@ -21,6 +21,7 @@ public class XmlVocabulary {
 	public static final String NAME = "name";
 	public static final String STRUCT = "struct";
 	public static final String COMMA = ",";
+	public static final String TIMESTAMP = "timestamp";
 	
 	public static final String PARAM_RESULT = "$";
 	public static final String TABLE_RESULT = "@";
@@ -30,4 +31,5 @@ public class XmlVocabulary {
 	public static final String INHERIT = "INHERIT";
 	public static final String JSON = "json";
 	public static final String COLUMNS = "columns";
+	public static final String DATASOURCE = "datasource";
 }

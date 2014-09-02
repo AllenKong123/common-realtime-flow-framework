@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.dom4j.Document;
 import org.dom4j.Element;
 
+import com.sogou.flow.constants.XmlVocabulary;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 

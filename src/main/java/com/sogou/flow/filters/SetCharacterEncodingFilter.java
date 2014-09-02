@@ -11,9 +11,9 @@ import javax.servlet.ServletResponse;
 
 /**
  * 
- *  Copyright 2014 BUPT917
+ *  Copyright 2014 SOGOU
  *  All right reserved.
- *	<p>Filter  for encoding response and request. Set default as GBK. </p>
+ *	<p>Filter  for encoding response and request. Set default as UTF-8. </p>
  * @author hequn
  * @Creat Time : 2014-5-8 上午9:13:01
  * @SetCharacterEncodingFilter

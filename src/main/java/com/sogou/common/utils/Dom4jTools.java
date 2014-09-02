@@ -1,4 +1,4 @@
-package com.sogou.flow.utils;
+package com.sogou.common.utils;
 
 import java.io.File;
 import java.lang.reflect.Method;

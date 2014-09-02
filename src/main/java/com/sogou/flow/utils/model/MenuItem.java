@@ -3,7 +3,7 @@ package com.sogou.flow.utils.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sogou.flow.utils.XmlVocabulary;
+import com.sogou.flow.constants.XmlVocabulary;
 
 /**
  * The items entity, it contains the information of the record and its submenus. 

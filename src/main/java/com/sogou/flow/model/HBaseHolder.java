@@ -1,14 +1,13 @@
 package com.sogou.flow.model;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HTable;
 
+import com.sogou.flow.constants.SystemConstants;
 import com.sogou.flow.dao.impl.DBHBaseQuerierImpl;
-import com.sogou.flow.utils.SystemConstants;
 import com.sogou.flow.utils.abstracts.DBHolder;
 
 /**
@@ -30,7 +29,7 @@ public class HBaseHolder extends DBHolder{
 	private HTable hTable;
 
 	public HBaseHolder(String dbName, String address, boolean bigTable,
-			String username, String password ,List<String> targets) {
+			String username, String password ,String[] targets) {
 		super(dbName, address, bigTable, username, password, targets);
 		this.dbName = dbName;
 	}

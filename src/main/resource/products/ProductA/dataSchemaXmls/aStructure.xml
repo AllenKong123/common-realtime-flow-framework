@@ -17,11 +17,13 @@
 			# means inherit result, recursive loading (sons).
 			
 -->
-
+<!-- This file will not be changed frequently, but it is kept here as a file configed by developer-->
 <schema>
+	<!--columns means the columns wanted to be queried out ,the timestamp is a default and can not be changed -->
 	<datasource name="wap.demo.tmp" bigtable="true" 
-				address="default" username="default" password="default"/>
-				
+				address="default" username="default" password="default"
+				columns="pv,uv,cl,timestamp"/>
+
 <!-- 	<datasource name="dbname" bigtable="false" 
 				address="localhost:3306" username="root" password="root"/> -->
 
@@ -29,8 +31,9 @@
 		<list>
 			<struct key="$currentDimension">
 				<item type="string" name="range" value="$time"/>
-				<item type="integer" name="count" value="$count"/>
-				<columns type="string[]" name="columns" value="*timestamp,pv,uv,cl"/>
+				<item type="string" name="count" value="$count"/>
+				<!-- The value pv,uv,cl should be the same order with datasource's columns-->
+				<columns type="string[]" name="columns" value="*pv,uv,cl,timestamp"/>
 				<points type="list" name="points" value="@TABLE"/>
 				<sons type="list" name="sons" value="#INHERIT"/>
 			</struct>
