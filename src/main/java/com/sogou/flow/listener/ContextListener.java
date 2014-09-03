@@ -4,7 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import com.sogou.flow.utils.CacheHandler;
-import com.sogou.flow.utils.MenuFileTracker;
+import com.sogou.flow.utils.VersionFileTracker;
 
 
 /**
@@ -36,10 +36,10 @@ public class ContextListener implements ServletContextListener {
 	}
 	
 	/**
-	 * Load the product.
+	 * Load the product and start the file status tracker.
 	 */
 	public void loadResourceMap(){
 		CacheHandler.productLoader.load();
-		MenuFileTracker.startTracker();
+		VersionFileTracker.startTracker();
 	}
 }

@@ -17,11 +17,22 @@ public class FileStatus {
 	private String fileName;
 	
 	private long lastModifyTime;
+	
+	private Integer version;
 
-	public FileStatus(String fileName, long lastModifyTime) {
+	public FileStatus(String fileName, long lastModifyTime , Integer version) {
 		super();
 		this.fileName = fileName;
 		this.lastModifyTime = lastModifyTime;
+		this.version = version;
+	}
+
+	public Integer getVersion() {
+		return version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
 	}
 
 	public String getFileName() {

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <浏览器 dimension="browser">
-	<qq id="qq"/>
-	<uc id="uc"/>
-	<obigo id="obigo"/>
-	<chrome id="chrome"/>
-	<ie id="ie"/>
-	<sogou id="sogou"/>
+	<全部浏览器 value="\N"/>
+	<qq/>
+	<uc/>
+	<obigo/>
+	<chrome/>
+	<ie/>
+	<sogou/>
 </浏览器>

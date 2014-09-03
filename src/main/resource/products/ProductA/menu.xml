@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- menuKey should be the product name -->
+<!-- menuKey should be the product name, if the other files of this product changed
+, please modify this file as a starter to load the changed things again. For example:
+add a namespace at the end of this file and save it-->
 <无线流量系统 dataSchemaFile="aStructure.xml">
 	<import>dimensionChannel.xml</import>
 	<import>dimensionBrowser.xml</import>

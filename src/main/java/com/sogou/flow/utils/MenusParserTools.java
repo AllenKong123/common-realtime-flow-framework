@@ -59,7 +59,7 @@ public class MenusParserTools {
 				continue;
 			else {
 				//Get the xml first and parse to Document
-				File file = FileLoadTools.getXmlByName(
+				File file = FileLoadTools.getFileByName(
 						element.getText(), 
 						path+productName
 						+SystemConstants.SPLITTER
@@ -120,7 +120,7 @@ public class MenusParserTools {
 	private static Document createDataSchemaByFile(MenuItemWrapper menuItemWrapper , String currentProduct) {
 		String realFilePath =
 				currentProduct+SystemConstants.properties.getProperty(SystemConstants.DATA_STRUCTURE_PATH);
-		File tmp = FileLoadTools.getXmlByName(menuItemWrapper.getDataSchemaFile(), realFilePath);
+		File tmp = FileLoadTools.getFileByName(menuItemWrapper.getDataSchemaFile(), realFilePath);
 		return Dom4jTools.getDocByFile(tmp);
 	}
 }

@@ -27,4 +27,5 @@ public interface DBQueryService {
 	 * @return the queried final json array
 	 */
 	public JSONArray queryForResults(String productName,String currentDimension,Map<String,?> params);
+	
 }

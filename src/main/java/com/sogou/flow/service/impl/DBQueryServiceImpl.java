@@ -41,6 +41,10 @@ public class DBQueryServiceImpl implements DBQueryService {
 	private DBHolder dbHolder;
 	
 	private Logger logger = Logger.getLogger(DBQueryServiceImpl.class);
+
+	public DBQueryServiceImpl() {
+		super();
+	}
 	
 	public DBQueryServiceImpl(DBQuerierDao dbQuerierDao, DBHolder dbHolder) {
 		super();
@@ -75,7 +79,6 @@ public class DBQueryServiceImpl implements DBQueryService {
 				CacheHandler.dataSchemaMapper.get(productName), new JSONObject(), params, results, depth));
 		}
 		
-		// TODO Auto-generated method stub
 		return jsonArray;
 	}
 	
@@ -181,5 +184,5 @@ public class DBQueryServiceImpl implements DBQueryService {
 		
 		return criteriaMapper;
 	}
-	
+
 }

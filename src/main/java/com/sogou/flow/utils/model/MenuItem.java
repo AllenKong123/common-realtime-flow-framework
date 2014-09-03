@@ -12,7 +12,7 @@ import com.sogou.flow.constants.XmlVocabulary;
  */
 public class MenuItem implements Comparable<MenuItem>{
 
-	private String id = XmlVocabulary.DEFAULT_ID;
+	private String value = XmlVocabulary.DEFAULT_VALUE;
 	private String dimension = XmlVocabulary.DEFAULT_DEMENSION;
 	private String itemName;
 	private Integer order;
@@ -37,12 +37,12 @@ public class MenuItem implements Comparable<MenuItem>{
 		this.itemName = itemName;
 	}
 
-	public String getId() {
-		return id;
+	public String getValue() {
+		return value;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setValue(String value) {
+		this.value = value;
 	}
 
 	public Integer getOrder() {

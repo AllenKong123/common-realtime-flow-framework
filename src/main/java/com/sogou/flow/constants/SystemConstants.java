@@ -36,6 +36,8 @@ public class SystemConstants {
 	public static final String TIME_BEGIN = "timeBegin";
 	public static final String TIME_END = "timeEnd";
 	public static final String DEPTH = "depth";
+	public static final String VERSION_FILE = "VERSION";
+	public static final Integer REGUARDLESS_LOADING = -1;
 	
 	//load the key value into properties
 	static {

@@ -70,7 +70,12 @@ public class QueryServlet extends HttpServlet {
         try {
         	//Get the dataSchema document
         	Document doc = CacheHandler.dataSchemaMapper.get(productName);
-
+        	
+        	//No such product
+        	if(doc == null) {
+        		return;
+        	}
+        	
         	DatabaseDescriber databaseDescriber = new DatabaseDescriber();
     		//From the the doc, load the attributes in
     		Dom4jTools.setValueToInstanceByMethod(databaseDescriber, 
@@ -94,6 +99,7 @@ public class QueryServlet extends HttpServlet {
         	//Querying for results.
         	trans = dbQueryService.queryForResults(productName, currentDimension, params);
         	result = trans.toString();
+        	dbQueryService = null;
         } catch (Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -30,8 +30,8 @@ public class CacheHandler {
 								= new HashMap<String,Map<String,List<String>>>();
 	
 	//the cached data of the json result, the product/time and together with the current channel can be the key
-	public static final Map<String,Object> cachedData
-								= new HashMap<String, Object>();
+	//public static final Map<String,Object> cachedData
+	//							= new HashMap<String, Object>();
 	
 	//file status tracker (just track the menu file)
 	public static final Map<String,FileStatus> fileTracker

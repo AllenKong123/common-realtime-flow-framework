@@ -75,12 +75,12 @@ public class FileLoadTools {
 	}
 	
 	/**
-	 * Get the xml file from the classpath.
+	 * Get the file from the classpath.
 	 * @param fileName the file name
-	 * @param path the path where the xml file located in
+	 * @param path the path where the file located in
 	 * @return the file specified
 	 */
-	public static File getXmlByName(String fileName,String path) {
+	public static File getFileByName(String fileName,String path) {
 		
 		Class<?> clazz = FileLoadTools.class;
 		URLClassLoader loader = (URLClassLoader) clazz.getClassLoader();
@@ -98,4 +98,5 @@ public class FileLoadTools {
 		}
 		return file;
 	}
+	
 }
