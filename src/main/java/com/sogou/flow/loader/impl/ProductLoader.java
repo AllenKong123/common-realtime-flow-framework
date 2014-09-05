@@ -36,13 +36,29 @@ public class ProductLoader implements Loader
 	private Logger logger = Logger.getLogger(ProductLoader.class);
 	
 	@Override
-	public boolean load() {
+	public boolean loadAll() {
 		boolean result = true;
     	try {
 			File[] files = FileLoadTools.getFoldersByDirectory(path);
 			for (File file : files) {
 				if(file.isDirectory())
 					createOneProduct(file.getName());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = false;
+		}
+    	return result;
+	}
+	
+	@Override
+	public boolean load(String key) {
+		boolean result = true;
+    	try {
+			File file = FileLoadTools.getFileByName(key, path);
+			
+			if(file.isDirectory()){
+				createOneProduct(file.getName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,7 +74,7 @@ public class ProductLoader implements Loader
 			CacheHandler.dataSchemaMapper.remove(key);
 			CacheHandler.menuMapper.remove(key);
 			CacheHandler.dimensionsMapper.remove(key);
-			CacheHandler.fileTracker.remove(key);
+			CacheHandler.fileTracker.get(key).setVersion(SystemConstants.REGUARDLESS_LOADING);
 		} catch (Exception e) {
 			e.printStackTrace();
 			result = false;
@@ -67,13 +83,13 @@ public class ProductLoader implements Loader
 	}
 
 	@Override
-	public boolean reload(String key) {
+	public boolean reload(String key , int version) {
 		boolean result = true;
     	try {
 			File file = FileLoadTools.getFileByName(key, path);
 			
 			if(file.isDirectory()){
-				createOneProduct(file.getName());
+				reloadOneProduct(file.getName(),version);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,6 +124,17 @@ public class ProductLoader implements Loader
 		
 		int numberInt = Integer.valueOf(number);
 		
+		if(numberInt < SystemConstants.REGUARDLESS_LOADING) {
+			logger.error("Illegal version from the file less than regard level, product name is "+
+					folderName+", VERSION file number not right!");
+			return;
+		}
+		
+		//Add the file to tracker if it changed
+		FileStatus fileStatus = new FileStatus(
+				tmpVersion.getName(), tmpVersion.lastModified() ,numberInt
+		);
+		CacheHandler.fileTracker.put(folderName, fileStatus);
 		//regardless of the -1 VERSION number, represents the unload or not load
 		if(numberInt == SystemConstants.REGUARDLESS_LOADING) {
 			logger.debug("Product "+folderName+" is not loaded because the VERSION is regardless!");
@@ -117,15 +144,42 @@ public class ProductLoader implements Loader
 		MenuItemWrapper menuWrapper = new MenuItemWrapper();
 		File tmpXml = FileLoadTools.getFileByName(menuXml, path+folderName+SystemConstants.SPLITTER);
 		Document document = Dom4jTools.getDocByFile(tmpXml);
-		//Add the file to tracker if it changed
-		FileStatus fileStatus = new FileStatus(
-				tmpVersion.getName(), tmpVersion.lastModified() ,numberInt
-		);
-		CacheHandler.fileTracker.put(folderName, fileStatus);
 		//Parse the menu
 		MenusParserTools.processMenuCompleter(menuWrapper, document, folderName);
 		menuWrapper.setProductName(folderName);
 		//cache it
 		CacheHandler.menuMapper.put(folderName, menuWrapper);
 	}
+	
+	/**
+	 * Reload the menu and data for this product.
+	 * @param folderName
+	 * @param version 
+	 */
+	private void reloadOneProduct(String folderName, int version){
+
+		File tmpVersion = FileLoadTools.getFileByName(SystemConstants.VERSION_FILE,
+																path+folderName+SystemConstants.SPLITTER);
+		
+		//Add the file to tracker if it changed
+		FileStatus fileStatus = new FileStatus(
+				tmpVersion.getName(), tmpVersion.lastModified() ,version
+		);
+		CacheHandler.fileTracker.put(folderName, fileStatus);
+		//regardless of the -1 VERSION number, represents the unload or not load
+		if(version == SystemConstants.REGUARDLESS_LOADING) {
+			logger.debug("Product "+folderName+" is not loaded because the VERSION is regardless!");
+			return;
+		}
+		
+		MenuItemWrapper menuWrapper = new MenuItemWrapper();
+		File tmpXml = FileLoadTools.getFileByName(menuXml, path+folderName+SystemConstants.SPLITTER);
+		Document document = Dom4jTools.getDocByFile(tmpXml);
+		//Parse the menu
+		MenusParserTools.processMenuCompleter(menuWrapper, document, folderName);
+		menuWrapper.setProductName(folderName);
+		//cache it
+		CacheHandler.menuMapper.put(folderName, menuWrapper);
+	}
+
 }

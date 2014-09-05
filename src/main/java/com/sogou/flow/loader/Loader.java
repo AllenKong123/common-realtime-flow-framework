@@ -15,7 +15,14 @@ public interface Loader {
 	 * <p>Load the instances to the container. </p>
 	 * @return true if load successfully
 	 */
-	public boolean load();
+	public boolean loadAll();
+	
+	/**
+	 * <p>Load the single instance to the container. </p>
+	 * @param key the key represents the related resources
+	 * @return true if load successfully
+	 */
+	public boolean load(String key);
 	
 	/**
 	 * <p>Unload the resources create by the key, just remove them.</p>
@@ -27,7 +34,8 @@ public interface Loader {
 	/**
 	 * <p>Reload the resources create by the key.</p>
 	 * @param the key represents the related resources
+	 * @param the next version
 	 * @return true if load successfully
 	 */
-	public boolean reload(String key);
+	public boolean reload(String key ,int version);
 }

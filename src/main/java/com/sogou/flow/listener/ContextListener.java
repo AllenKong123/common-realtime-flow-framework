@@ -39,7 +39,7 @@ public class ContextListener implements ServletContextListener {
 	 * Load the product and start the file status tracker.
 	 */
 	public void loadResourceMap(){
-		CacheHandler.productLoader.load();
+		CacheHandler.productLoader.loadAll();
 		VersionFileTracker.startTracker();
 	}
 }

@@ -3,7 +3,11 @@ package com.sogou.flow.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -44,16 +48,17 @@ public class VersionFileTracker {
 				
 		    	try {
 					File[] files = FileLoadTools.getFoldersByDirectory(path);
+					Map<String,FileStatus> containerM = CacheHandler.fileTracker;
 					for (File file : files) {
 						if(file.isDirectory()){
 							String productName = file.getName();
 							
-							FileStatus fileStatus = CacheHandler.fileTracker.get(productName);
+							FileStatus fileStatus = containerM.get(productName);
 							//if it is a new product just reload without unload
 							if(fileStatus == null){
-								logger.debug("Product "+productName+" not in map try to reload!" +
-										"It may be a now product or an unloaded product.");
-								CacheHandler.productLoader.reload(productName);
+								logger.info("Product "+productName+" not in map try to load it !" +
+										"It is a now product!");
+								CacheHandler.productLoader.load(productName);
 								continue;
 							}
 							//Get the pre time from the tracker map
@@ -67,11 +72,11 @@ public class VersionFileTracker {
 							if(preTime != lastTime){
 								BufferedReader fileReader = new BufferedReader(new FileReader(tmp));
 								String number = fileReader.readLine();
-								int numberInt = -1;
+								int numberInt = SystemConstants.REGUARDLESS_LOADING-1;
 								try {
 									numberInt = Integer.valueOf(number);
 								} catch (Exception e) {
-									logger.error("Number parse errors! The change will not be loaded.");
+									logger.info("Number parse errors! The change will not be loaded.");
 									continue;
 								}
 								// if regardless signal just unload
@@ -82,16 +87,35 @@ public class VersionFileTracker {
 								else if (numberInt > fileStatus.getVersion()) {
 									//If the time do not match each other, unload and reload.
 									CacheHandler.productLoader.unload(productName);
-									CacheHandler.productLoader.reload(productName);
+									CacheHandler.productLoader.reload(productName,numberInt);
 									logger.info("Product " + productName+ " load again!");
-									//Update the last modified time
-									CacheHandler.fileTracker.get(productName).setLastModifyTime(lastTime);
 								}else {
-									logger.info("Product " + productName+ "version not right changed!");
+									logger.error("Product " + productName+ " version not right changed!");
 								}
+								//Update the last modified time
+								containerM.get(productName).setLastModifyTime(lastTime);
 							}
 						}
 					}
+					//Get the useless product in memory
+					List<String> useless = new ArrayList<String>();
+					for(Entry<String, FileStatus> entry : containerM.entrySet()){
+						boolean signal = true;
+						for(File file : files){
+							if(file.getName().equals(entry.getKey())) {
+								signal = false;
+								break;
+							}
+						}
+						if(signal == true) useless.add(entry.getKey());
+					}
+					//Unload the product and even more remove the product in fileTracker
+					for (String pName : useless) {
+						CacheHandler.productLoader.unload(pName);
+						CacheHandler.fileTracker.remove(pName);
+						logger.info("Product "+ pName+" unload, because it is removed by some one!");
+					}
+					
 				} catch (Exception e) {
 					logger.error("Error happens in MenuFileTracker.java");
 					e.printStackTrace();
