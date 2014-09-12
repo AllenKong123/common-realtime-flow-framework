@@ -8,7 +8,6 @@ public class XmlVocabulary {
 	public static final String STRUCTUREFILE = "dataSchemaFile";
 	public static final String MENU_KEY = "menuKey";
 	public static final String ALL="all";
-	public static final String DEFAULT_VALUE="defaultV-Sogou-Unique";
 	public static final String DEFAULT_DEMENSION="defaultD-Sogou-Unique";
 	public static final String DEFAULT_STRUCTUREFILE = "defaultS-Sogou-Unique";
 	

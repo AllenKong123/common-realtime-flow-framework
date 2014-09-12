@@ -1,0 +1,379 @@
+1.数据查询URL:
+	http://10.134.62.227:8088/FlowFramework/QueryServlet?productName=ProductA
+	&currentDimension=province&abtest=\N&browser=\N&channel=\N&province=华北
+	&depth=10&timeBegin=20140801000000&timeEnd=20140801000500
+	&time=201408010000&count=10
+	基本项必需项
+			productName	取值当前产品名
+			currentDimension 取值当前查询维度值
+			timeBegin 取值查询开始时间
+			timeEnd	取值查询结束时间
+			depth 取值查询递归深度
+			abtest/browser/channel/province	当前产品所有维度取值，不同产品此参数个数不同
+	非必需项
+			time/count 此例中此二者为非必需，根据productXXX中的dataSchemaXmls文件夹下的schema文件配置
+					         这两个参数和值将会并在requestMap中，可以获得并加入生产的json对象中，为前台开发提供便利
+2.菜单展示URL:
+	http://10.134.62.227:8088/FlowFramework/MenuServlet?productName=ProductA
+	只需要指明使用的产品。
+数据示例：
+[
+    {
+        "key": "地区",
+        "range": "201408010000",
+        "count": "10",
+        "columns": [
+            "pv",
+            "uv",
+            "cl",
+            "timestamp"
+        ],
+        "points": [
+            null
+        ],
+        "sons": [
+            {
+                "key": "华北",
+                "range": "201408010000",
+                "count": "10",
+                "columns": [
+                    "pv",
+                    "uv",
+                    "cl",
+                    "timestamp"
+                ],
+                "points": [
+                    null
+                ],
+                "sons": [
+                    {
+                        "key": "河北省",
+                        "range": "201408010000",
+                        "count": "10",
+                        "columns": [
+                            "pv",
+                            "uv",
+                            "cl",
+                            "timestamp"
+                        ],
+                        "points": [
+                            [
+                                6037,
+                                4519,
+                                4680,
+                                1406822400
+                            ]
+                        ],
+                        "sons": []
+                    },
+                    {
+                        "key": "北京市",
+                        "range": "201408010000",
+                        "count": "10",
+                        "columns": [
+                            "pv",
+                            "uv",
+                            "cl",
+                            "timestamp"
+                        ],
+                        "points": [
+                            [
+                                5798,
+                                4456,
+                                5361,
+                                1406822400
+                            ]
+                        ],
+                        "sons": []
+                    },
+                    {
+                        "key": "天津市",
+                        "range": "201408010000",
+                        "count": "10",
+                        "columns": [
+                            "pv",
+                            "uv",
+                            "cl",
+                            "timestamp"
+                        ],
+                        "points": [
+                            [
+                                7147,
+                                5497,
+                                7269,
+                                1406822400
+                            ]
+                        ],
+                        "sons": []
+                    }
+                ]
+            },
+            {
+                "key": "东北",
+                "range": "201408010000",
+                "count": "10",
+                "columns": [
+                    "pv",
+                    "uv",
+                    "cl",
+                    "timestamp"
+                ],
+                "points": [
+                    null
+                ],
+                "sons": [
+                    {
+                        "key": "辽宁省",
+                        "range": "201408010000",
+                        "count": "10",
+                        "columns": [
+                            "pv",
+                            "uv",
+                            "cl",
+                            "timestamp"
+                        ],
+                        "points": [
+                            [
+                                2324,
+                                1762,
+                                1984,
+                                1406822400
+                            ]
+                        ],
+                        "sons": []
+                    },
+                    {
+                        "key": "吉林省",
+                        "range": "201408010000",
+                        "count": "10",
+                        "columns": [
+                            "pv",
+                            "uv",
+                            "cl",
+                            "timestamp"
+                        ],
+                        "points": [
+                            [
+                                934,
+                                669,
+                                779,
+                                1406822400
+                            ]
+                        ],
+                        "sons": []
+                    },
+                    {
+                        "key": "黑龙江省",
+                        "range": "201408010000",
+                        "count": "10",
+                        "columns": [
+                            "pv",
+                            "uv",
+                            "cl",
+                            "timestamp"
+                        ],
+                        "points": [
+                            [
+                                1490,
+                                1170,
+                                1151,
+                                1406822400
+                            ]
+                        ],
+                        "sons": []
+                    }
+                ]
+            }
+        ]
+    }
+]
+
+菜单示例：
+{
+    "dataSchemaFile": "aStructure.xml",
+    "dimensions": [
+        "channel",
+        "browser",
+        "province",
+        "abtest"
+    ],
+    "menuItems": [
+        {
+            "childrenItems": [
+                {
+                    "childrenItems": [
+                        {
+                            "childrenItems": [],
+                            "dimension": "channel",
+                            "itemName": "手机QQ浏览器",
+                            "order": 0
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "channel",
+                            "itemName": "手机腾讯网",
+                            "order": 1
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "channel",
+                            "itemName": "手机搜狗浏览器",
+                            "order": 2
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "channel",
+                            "itemName": "手机输入法APP",
+                            "order": 3
+                        }
+                    ],
+                    "dimension": "channel",
+                    "itemName": "Sogou域名流量汇总",
+                    "order": 0
+                },
+                {
+                    "childrenItems": [
+                        {
+                            "childrenItems": [],
+                            "dimension": "channel",
+                            "itemName": "SOSO-手机QQ浏览器",
+                            "order": 1
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "channel",
+                            "itemName": "SOSO-手机腾讯网",
+                            "order": 2
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "channel",
+                            "itemName": "SOSO-手机搜狗浏览器",
+                            "order": 3
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "channel",
+                            "itemName": "SOSO-手机输入法APP",
+                            "order": 4
+                        }
+                    ],
+                    "dimension": "channel",
+                    "itemName": "SOSO域名流量汇总",
+                    "order": 1
+                }
+            ],
+            "dimension": "channel",
+            "itemName": "渠道",
+            "order": 0
+        },
+        {
+            "childrenItems": [
+                {
+                    "childrenItems": [],
+                    "dimension": "browser",
+                    "itemName": "qq",
+                    "order": 0
+                },
+                {
+                    "childrenItems": [],
+                    "dimension": "browser",
+                    "itemName": "uc",
+                    "order": 1
+                },
+                {
+                    "childrenItems": [],
+                    "dimension": "browser",
+                    "itemName": "obigo",
+                    "order": 2
+                },
+                {
+                    "childrenItems": [],
+                    "dimension": "browser",
+                    "itemName": "chrome",
+                    "order": 3
+                },
+                {
+                    "childrenItems": [],
+                    "dimension": "browser",
+                    "itemName": "ie",
+                    "order": 4
+                },
+                {
+                    "childrenItems": [],
+                    "dimension": "browser",
+                    "itemName": "sogou",
+                    "order": 5
+                }
+            ],
+            "dimension": "browser",
+            "itemName": "浏览器",
+            "order": 0
+        },
+        {
+            "childrenItems": [
+                {
+                    "childrenItems": [
+                        {
+                            "childrenItems": [],
+                            "dimension": "province",
+                            "itemName": "河北省",
+                            "order": 0
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "province",
+                            "itemName": "北京市",
+                            "order": 1
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "province",
+                            "itemName": "天津市",
+                            "order": 2
+                        }
+                    ],
+                    "dimension": "province",
+                    "itemName": "华北",
+                    "order": 0
+                },
+                {
+                    "childrenItems": [
+                        {
+                            "childrenItems": [],
+                            "dimension": "province",
+                            "itemName": "辽宁省",
+                            "order": 1
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "province",
+                            "itemName": "吉林省",
+                            "order": 2
+                        },
+                        {
+                            "childrenItems": [],
+                            "dimension": "province",
+                            "itemName": "黑龙江省",
+                            "order": 3
+                        }
+                    ],
+                    "dimension": "province",
+                    "itemName": "东北",
+                    "order": 1
+                }
+            ],
+            "dimension": "province",
+            "itemName": "地区",
+            "order": 0
+        },
+        {
+            "childrenItems": [],
+            "dimension": "abtest",
+            "itemName": "ABtest",
+            "order": 0
+        }
+    ],
+    "menuName": "无线流量系统",
+    "productName": "ProductA"
+}

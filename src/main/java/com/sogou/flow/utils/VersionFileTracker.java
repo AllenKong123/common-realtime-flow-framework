@@ -113,7 +113,7 @@ public class VersionFileTracker {
 					for (String pName : useless) {
 						CacheHandler.productLoader.unload(pName);
 						CacheHandler.fileTracker.remove(pName);
-						logger.info("Product "+ pName+" unload, because it is removed by some one!");
+						logger.info("Product "+ pName+" unload, because it is removed by someone!");
 					}
 					
 				} catch (Exception e) {
