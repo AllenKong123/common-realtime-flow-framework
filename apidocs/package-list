@@ -1,0 +1,16 @@
+com.sogou.common.utils
+com.sogou.flow.action
+com.sogou.flow.constants
+com.sogou.flow.dao
+com.sogou.flow.dao.impl
+com.sogou.flow.filters
+com.sogou.flow.listener
+com.sogou.flow.loader
+com.sogou.flow.loader.impl
+com.sogou.flow.model
+com.sogou.flow.service
+com.sogou.flow.service.impl
+com.sogou.flow.utils
+com.sogou.flow.utils.abstracts
+com.sogou.flow.utils.dto
+com.sogou.flow.utils.model
