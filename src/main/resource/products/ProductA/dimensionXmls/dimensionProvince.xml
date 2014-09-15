@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<地区 dimension="province">
-	<全部地区 value="\N"/>
+<地区 dimension="province" value="province-all">
 	<华北>
 		<河北省/>
 		<北京市/>

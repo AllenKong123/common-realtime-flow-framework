@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<渠道 dimension="channel">
-	<全部渠道 value="\N"/>
+<渠道 dimension="channel" value="channel-all">
 	<Sogou域名流量汇总>
 		<手机QQ浏览器/>
 		<手机腾讯网/>

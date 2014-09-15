@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<浏览器 dimension="browser">
-	<全部浏览器 value="\N"/>
+<浏览器 dimension="browser" value="browser-all">
 	<qq/>
 	<uc/>
 	<obigo/>

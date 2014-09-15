@@ -1,4 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ABtest dimension="abtest">
-	<全部ABtest value="\N"/>
+<ABtest dimension="abtest" value="abtest-all">
 </ABtest>

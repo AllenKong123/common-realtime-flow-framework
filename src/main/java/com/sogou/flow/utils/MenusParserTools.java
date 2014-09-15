@@ -92,6 +92,9 @@ public class MenusParserTools {
 		String itemName = element.getName();
 		menuItem.setItemName(itemName);
 		menuItem.setOrder(order);
+		//Set the name to value if the value of the menuItem does not exist
+		if(menuItem.getValue() == XmlVocabulary.DEFAULT_VALUE)
+			menuItem.setValue(itemName);
 		//If the dimension is DEFAULT_DEMENSION, load the parents dimension
 		//so the dimension of each menuItem will be the closest ancestor's
 		if(menuItem.getDimension().equals(XmlVocabulary.DEFAULT_DEMENSION)){
@@ -100,14 +103,16 @@ public class MenusParserTools {
 		}
 		
 		List<String> sons = new ArrayList<String>();
-		//For each dimension, it's doc will be loaded in
-		currProductDimensions.put(itemName, sons);
+		//For each dimension, it's sons will be loaded in
+		currProductDimensions.put(menuItem.getValue(), sons);
 		
 		@SuppressWarnings("unchecked")
 		List<Element> elements = element.elements();
 		for (Element elementTmp : elements) {
 			processMenuItems(menuItem.getChildrenItems(), elementTmp , currProductDimensions , order++);
-			sons.add(elementTmp.getName());
+			String value = elementTmp.attributeValue(XmlVocabulary.VALUE);
+			if(value == null) value = elementTmp.getName();
+			sons.add(value);
 		}
 	}
 
