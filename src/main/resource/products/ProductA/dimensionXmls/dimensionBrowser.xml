@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <浏览器 dimension="browser">
+=======
+<浏览器 dimension="browser" value="browser-all">
+>>>>>>> master
 	<qq/>
 	<uc/>
 	<obigo/>

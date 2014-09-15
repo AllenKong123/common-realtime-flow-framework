@@ -9,7 +9,18 @@ import org.dom4j.Document;
 import com.sogou.flow.loader.impl.ProductLoader;
 import com.sogou.flow.utils.dto.FileStatus;
 import com.sogou.flow.utils.model.MenuItemWrapper;
-
+/**
+ * 
+ *  Copyright 2014 SOGOU
+ *  All right reserved.
+ *	<p>
+ *	The very important heaps of the system, they are used to keep the 
+ *	information needed. 
+ *	</p>
+ * @author Qun He
+ * @Creat Time : 2014-9-15 下午3:22:45
+ * @CacheHandler
+ */
 public class CacheHandler {
 	//The product holder(loader)
 	public static final ProductLoader productLoader = new ProductLoader();

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<<<<<<< HEAD
 <渠道 dimension="channel">
+=======
+<渠道 dimension="channel" value="channel-all">
+>>>>>>> master
 	<Sogou域名流量汇总>
 		<手机QQ浏览器/>
 		<手机腾讯网/>
